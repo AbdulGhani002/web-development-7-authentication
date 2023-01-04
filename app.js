@@ -1,21 +1,18 @@
 const path = require("path");
 
 const express = require("express");
-
 const session = require("express-session");
-
-const db = require("./data/database");
-
 const mongodbStore = require("connect-mongodb-session");
 
+const db = require("./data/database");
 const demoRoutes = require("./routes/demo");
-
-const app = express();
 
 const MongoDBStore = mongodbStore(session);
 
+const app = express();
+
 const sessionStore = new MongoDBStore({
-  uri: "127.0.0.1:3000",
+  uri: "mongodb://127.0.0.1:27017",
   databaseName: "auth-demo",
   collection: "sessions",
 });
@@ -28,7 +25,7 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use(
   session({
-    secret: "keep-my-secret",
+    secret: "super-secret",
     resave: false,
     saveUninitialized: false,
     store: sessionStore,
